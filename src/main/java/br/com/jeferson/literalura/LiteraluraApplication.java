@@ -1,6 +1,7 @@
 package br.com.jeferson.literalura;
 
 import br.com.jeferson.literalura.client.GutendexApiClient;
+import br.com.jeferson.literalura.service.ConverteDados;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,6 @@ public class LiteraluraApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		GutendexApiClient apiClient = new GutendexApiClient();
-		apiClient.obterDadosApi();
+
 	}
 }
