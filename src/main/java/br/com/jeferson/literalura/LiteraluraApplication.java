@@ -1,21 +1,16 @@
 package br.com.jeferson.literalura;
 
-import br.com.jeferson.literalura.client.GutendexApiClient;
-import br.com.jeferson.literalura.service.ConverteDados;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-public class LiteraluraApplication implements CommandLineRunner {
+public class LiteraluraApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LiteraluraApplication.class, args);
-	}
+		ConfigurableApplicationContext context = SpringApplication.run(LiteraluraApplication.class, args);
 
-	@Override
-	public void run(String... args) throws Exception {
-
-
+		Menu menu = context.getBean(Menu.class);
+		menu.exibirMenu();
 	}
 }
