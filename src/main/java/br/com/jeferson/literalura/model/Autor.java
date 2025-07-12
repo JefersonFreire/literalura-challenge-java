@@ -2,9 +2,9 @@ package br.com.jeferson.literalura.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "autores")
@@ -13,11 +13,20 @@ public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String autor;
-    private LocalDate anoNascimento;
-    private LocalDate anoFalecimento;
-    @OneToMany
+    private String nome;
+    private Integer anoNascimento;
+    private Integer anoFalecimento;
+    @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Livro> livros = new ArrayList<>();
+
+    public Autor(DadosAutor dadosAutor) {
+        this.nome = dadosAutor.nome();
+        this.anoNascimento = dadosAutor.anoNascimento();
+        this.anoFalecimento = dadosAutor.anoFalecimento();
+    }
+
+    public Autor() {
+    }
 
     public Long getId() {
         return id;
@@ -27,27 +36,27 @@ public class Autor {
         this.id = id;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getNome() {
+        return nome;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public LocalDate getAnoNascimento() {
+    public Integer getAnoNascimento() {
         return anoNascimento;
     }
 
-    public void setAnoNascimento(LocalDate anoNascimento) {
+    public void setAnoNascimento(Integer anoNascimento) {
         this.anoNascimento = anoNascimento;
     }
 
-    public LocalDate getAnoFalecimento() {
+    public Integer getAnoFalecimento() {
         return anoFalecimento;
     }
 
-    public void setAnoFalecimento(LocalDate anoFalecimento) {
+    public void setAnoFalecimento(Integer anoFalecimento) {
         this.anoFalecimento = anoFalecimento;
     }
 
@@ -60,13 +69,23 @@ public class Autor {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Autor autor1 = (Autor) o;
+        return Objects.equals(id, autor1.id) && Objects.equals(nome, autor1.nome) && Objects.equals(anoNascimento, autor1.anoNascimento) && Objects.equals(anoFalecimento, autor1.anoFalecimento) && Objects.equals(livros, autor1.livros);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, anoNascimento, anoFalecimento, livros);
+    }
+
+    @Override
     public String toString() {
-        return "Autor{" +
-                "id=" + id +
-                ", autor='" + autor + '\'' +
-                ", anoNascimento=" + anoNascimento +
-                ", anoFalecimento=" + anoFalecimento +
-                ", livros=" + livros +
-                '}';
+        return "\n---------------Autor---------------\n" +
+                "Autor: " + nome +
+                "\nAno de nascimento: " + anoNascimento +
+                "\nAno de falecimento: " + anoFalecimento +
+                "\nLivros: " + livros.stream().map(Livro::getTitulo).toList();
     }
 }

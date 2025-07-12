@@ -8,21 +8,20 @@ import java.net.http.HttpResponse;
 
 public class GutendexApiClient {
 
-    public String obterDadosApi() {
+    public String obterDadosApi(String endereco) {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://gutendex.com/books?search=dickens%20great"))
+                .uri(URI.create("https://gutendex.com/books/?" + endereco))
                 .build();
-
-        HttpResponse<String> response = null;
         try {
-            response = client
+            HttpResponse<String> response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+            return json;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
-        String json = response.body();
-        return json;
     }
 }

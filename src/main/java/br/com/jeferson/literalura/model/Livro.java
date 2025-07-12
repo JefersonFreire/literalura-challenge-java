@@ -2,21 +2,36 @@ package br.com.jeferson.literalura.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
-@Table(name = "livros")
+@Table(name = "livros", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"titulo", "autor_id"})})
 public class Livro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String titulo;
     private String idioma;
     private Integer numeroDownloads;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Autor autor;
+
+    public Livro(DadosLivro dadosLivro) {
+
+        this.titulo = dadosLivro.titulo();
+
+        if (dadosLivro.idioma() != null && !dadosLivro.idioma().isEmpty()) {
+            this.idioma = dadosLivro.idioma().get(0);
+        } else {
+            this.idioma = "Não existe livros nesse idioma no banco de dados.";
+        }
+        this.numeroDownloads = dadosLivro.numeroDownloads();
+    }
+
+    public Livro() {
+    }
 
     public Long getId() {
         return id;
@@ -50,13 +65,21 @@ public class Livro {
         this.numeroDownloads = numeroDownloads;
     }
 
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
+
     @Override
     public String toString() {
-        return "Livro{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", idioma='" + idioma + '\'' +
-                ", numeroDownloads=" + numeroDownloads +
-                '}';
+        return "\n---------------Livro---------------\n" +
+                "Título: " + titulo +
+                "\nAutor: " + getAutor().getNome() +
+                "\nIdioma: " + idioma +
+                "\nNúmero de downloads: " + numeroDownloads;
     }
 }
+
