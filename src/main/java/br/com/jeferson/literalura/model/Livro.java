@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Livro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
     private String idioma;
