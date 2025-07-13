@@ -120,7 +120,7 @@ public class LivroService {
 
     public void listarAutoresVivosAnoDeterminado() {
         try {
-            System.out.println("Insira o ano para que deseja pesquisar:");
+            System.out.println("Insira o ano que deseja pesquisar:");
             int ano = leitura.nextInt();
             leitura.nextLine();
             List<Autor> autoresVivos = autorRepository.findByAnoNascimentoLessThanEqualAndAnoFalecimentoGreaterThanEqual(ano, ano);
